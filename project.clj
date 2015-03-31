@@ -4,4 +4,6 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[com.unboundid/unboundid-ldapsdk "2.3.8"]]
+  :scm {:name "git"
+        :url "https://github.com/mdaley/lein-ldapimem"}
   :eval-in-leiningen true)
