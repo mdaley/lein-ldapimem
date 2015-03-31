@@ -1,4 +1,4 @@
-(defproject lein-ldapimem "0.1.0-SNAPSHOT"
+(defproject lein-ldapimem "0.1.0"
   :description "Creates an in memory LDAP server based on UnboundID's implementation"
   :url "http://github.com/mdaley/lein-ldapimem"
   :license {:name "Eclipse Public License"
