@@ -1,6 +1,6 @@
 # lein-ldapimem (LDAP i[n] mem[ory])
 
-A Leiningen 2 plugin that runs a simple embedded instance of unboundID's in memory LDAP service. Useful for testing purposes.
+A Leiningen 2 plugin that runs a simple embedded instance of unboundID's in-memory LDAP service. Useful for testing purposes.
 
 ## Usage
 
@@ -35,6 +35,7 @@ There are optional pieces of configuration that control how the LDAP service ope
              :logging true} ; optional - default is false
   ...
 )
+```
 
 ## Notes
 
