@@ -37,6 +37,52 @@ There are optional pieces of configuration that control how the LDAP service ope
 )
 ```
 
+## Simple Example
+
+Pick an existing lein project and insert the following into the `project.clj`:
+
+```clojure
+:ldapimem {
+    :port 8399
+    :ldif-file-path "data.ldif"
+    :noschema true
+    :logging true
+  }
+```
+
+and insert the plugin into the `:plugins` section of the project definition:
+
+```clojure
+:plugins [...
+          [lein-ldapimem "0.1.0"]
+          ...]}
+```
+
+In the root of the project create a file called data.ldif containing:
+
+```
+n: dc=example,dc=com
+objectClass: domain
+objectClass: top
+dc: server
+
+dn: cn=Test Entry,dc=example,dc=com
+objectClass: inetOrgPerson
+cn: Test Entry
+sn: Entry
+givenName: Test
+```
+
+Run your project using lein (I'll just use the task `run` but just use whatever tasks you normally use):
+
+    $ lein ldapimem run
+
+Now you project is running, in another shell type:
+
+    $ ldapsearch -x -h localhost -p 8399
+
+and you will see a response that includes information similar to that specified in `data.ldif` as well as logging information appearing in the running project's console output.
+
 ## Notes
 
 * The LDAP service only has one unencrypted listener (which is probably enough for local testing).\
