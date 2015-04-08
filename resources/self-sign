@@ -1,0 +1,7 @@
+The scripts used to create the self-signed test certificate stores:
+
+keytool -genkey -alias localhost -keyalg RSA -validity 7300 -keystore keystore.jks -storetype JKS
+
+keytool -export -alias localhost -keystore keystore.jks -rfc -file public.cer
+
+keytool -import -alias localhost -file public.cer -storetype JKS -keystore truststore.jks
