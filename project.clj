@@ -6,6 +6,7 @@
   :dependencies [[com.unboundid/unboundid-ldapsdk "2.3.8"]]
   :scm {:name "git"
         :url "https://github.com/mdaley/lein-ldapimem"}
+  :lein-release {:deploy-via :clojars}
   :eval-in-leiningen true
   :repositories [["releases" {:url "https://clojars.org/repo"
                               :creds :gpg}]]
