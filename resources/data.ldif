@@ -1,0 +1,10 @@
+dn: dc=example,dc=com
+objectClass: domain
+objectClass: top
+dc: server
+
+dn: cn=Test Entry,dc=example,dc=com
+objectClass: inetOrgPerson
+cn: Test Entry
+sn: Entry
+givenName: Test

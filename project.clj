@@ -8,4 +8,18 @@
         :url "https://github.com/mdaley/lein-ldapimem"}
   :eval-in-leiningen true
   :repositories [["releases" {:url "https://clojars.org/repo"
-                              :creds :gpg}]])
+                              :creds :gpg}]]
+
+  :ldapimem {
+    :basedn "dc=example,dc=com"
+    :port 8389
+    :secure-port 8636
+    :ldif-file-path "resources/data.ldif"
+    :noschema true
+    :ssl true
+    :key-store-path "resources/keystore.jks"
+    :trust-store-path "resources/keystore.jks"
+    :key-store-password "password"
+    :logging true
+  }
+)
