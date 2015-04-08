@@ -28,14 +28,26 @@ There are optional pieces of configuration that control how the LDAP service ope
   :plugins [[lein-ldapimem "0.1.0"]]
   ...
   :ldapimem {:port 9839 ;optional - default value is 8389
-             :basedn "dc=dev,dc=mycorp,dc=com" ;optional base domain - default is dc=example,dc=com
-             :ldif-file-path "ldif.txt; optional - path of file containing valid LDIF data
-             :schema-file-path "schema.txt"; optional - path of file containing the schema
-             :noschema ; optional - no schema is to be used (not even the default one)
-             :logging true} ; optional - default is false
+             :basedn "dc=dev,dc=mycorp,dc=com" ; optional - base domain, default is "dc=example,dc=com"
+             :ldif-file-path "ldif.txt" ; optional - path of file containing valid LDIF data
+             :schema-file-path "schema.txt" ; optional - path of file containing the schema
+             :noschema true ; optional - no schema is to be used (not even the default one)
+             :logging true ; optional - default is false
+             
+             :username ; optional - a user to use access control
+             :password ; optional - the password for the access control user
+             
+             :ssl ; optional - if true then the server will run an additional LDAPS listener using SSL
+             :secure-port ; optional - the port on which LDAPS will run (default 8636)
+             :key-store-path ; optional - the path to the key store, default "resources/keystore.jks"
+             :key-store-password ; optional - the password for the key store, default is "password"
+             :trust-store-path ; optional - the path to the trust store, default "resources/truststore.jks"
+             }
   ...
 )
 ```
+
+Note that the default key store and trust store use a self-signed certificate which is _only suitable for testing!_
 
 ## Simple Example
 
@@ -95,6 +107,12 @@ and you will see a response that includes information similar to that specified 
     :port ~(Integer. (get (System/getenv) "LDAP_PORT" 8389)) ;uses 8389 if env variable not set
   ...
 ```
+
+* If you run with LDAPS enabled, the command to connect to search is:
+
+    $ ldapsearch -x -H ldaps://localhost:8636
+    
+  but, if you run on a mac (like I do) you may need to change `/etc/openldap/ldap.conf` to have `TLS_REQCERT` set to `allow` instead of `demand` so that the invalid self-signed certificate won't cause a problem.
 
 ## License
 

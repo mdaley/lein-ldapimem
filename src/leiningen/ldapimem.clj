@@ -13,13 +13,16 @@
   (get (project :ldapimem) k default))
 
 (defn- create-ldaps-config
-  [key-store-path key-store-password secure-port]
-  (let [key-store-mgr (KeyStoreKeyManager. key-store-path (.toCharArray key-store-password) "JKS" "server-cert")
-        trust-store-mgr (TrustStoreTrustManager. key-store-path)
-        ssl-util (SSLUtil. key-store-mgr (TrustAllTrustManager.);trust-store-mgr
-                           )
-        socket-factory (.createSSLServerSocketFactory ssl-util)]
-    (InMemoryListenerConfig/createLDAPSConfig "LDAPS" nil secure-port socket-factory nil)))
+  [key-store-path key-store-password trust-store-path secure-port]
+  (let [key-store-mgr (KeyStoreKeyManager. key-store-path (.toCharArray key-store-password) "JKS" "localhost")
+        trust-store-mgr (TrustStoreTrustManager. trust-store-path)
+        ssl-util (SSLUtil. key-store-mgr trust-store-mgr)
+        client-ssl-util (SSLUtil. (TrustAllTrustManager.))]
+    (InMemoryListenerConfig/createLDAPSConfig "LDAPS"
+                                              nil
+                                              secure-port
+                                              (.createSSLServerSocketFactory ssl-util)
+                                              (.createSSLSocketFactory client-ssl-util))))
 
 (defn ldapimem
   "Start an instance of in memory LDAP, run the task, and then stop LDAP."
@@ -27,12 +30,15 @@
   (let [basedn (config-value project :basedn "dc=example,dc=com")
         port (config-value project :port 8389)
         secure-port (config-value project :secure-port 8636)
+        username (config-value project :username)
+        password (config-value project :password)
         ldif-file-path (config-value project :ldif-file-path)
         schema-file-path (config-value project :schema-file-path)
         noschema? (config-value project :noschema)
         ssl? (config-value project :ssl)
         key-store-path (config-value project :key-store-path "resources/keystore.jks")
         key-store-password (config-value project :key-store-password "password")
+        trust-store-path (config-value project :trust-store-path "resources/truststore.jks")
         logging? (config-value project :logging)]
     (println "lein-ldapimem: starting in-memory LDAP instance, port =" port " basedns =" basedn)
     (when ssl?
@@ -42,10 +48,12 @@
           schema (when schema-file-path
                    (Schema/getSchema (into-array String [schema-file-path])))
           ldaps-config (when ssl?
-                         (create-ldaps-config key-store-path key-store-password secure-port))]
+                         (create-ldaps-config key-store-path key-store-password trust-store-path secure-port))]
       (.setListenerConfigs config (into-array InMemoryListenerConfig (if ssl?
                                                                             [ldap-config ldaps-config]
                                                                             [ldap-config])))
+      (when (and username password)
+        (.addAdditionalBindCredentials config (str "cn=" username) password))
       (when logging?
         (.setAccessLogHandler config (ConsoleHandler.)))
       (if noschema?

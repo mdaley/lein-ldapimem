@@ -10,16 +10,15 @@
   :repositories [["releases" {:url "https://clojars.org/repo"
                               :creds :gpg}]]
 
-  :ldapimem {
-    :basedn "dc=example,dc=com"
-    :port 8389
-    :secure-port 8636
-    :ldif-file-path "resources/data.ldif"
-    :noschema true
-    :ssl true
-    :key-store-path "resources/keystore.jks"
-    :trust-store-path "resources/keystore.jks"
-    :key-store-password "password"
-    :logging true
-  }
-)
+  :ldapimem {:basedn "dc=example,dc=com"
+             :port 8389
+             :secure-port 8636
+             ;:username "admin"
+             ;:password "password"
+             :ldif-file-path "resources/data.ldif"
+             :noschema true
+             :ssl true
+             :key-store-path "resources/keystore.jks"
+             :trust-store-path "resources/truststore.jks"
+             :key-store-password "password"
+             :logging true})
