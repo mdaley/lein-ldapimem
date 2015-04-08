@@ -4,7 +4,7 @@ A Leiningen 2 plugin that runs a simple embedded instance of unboundID's in-memo
 
 ## Usage
 
-Add `[lein-ldapimem "0.1.0"]` to the `:plugin` vector of your project.
+Add `[lein-ldapimem "0.1.1"]` to the `:plugin` vector of your project.
 
 Start the LDAP service when running lein by specifying it before the other tasks that you are running, for example:
 
@@ -25,7 +25,7 @@ There are optional pieces of configuration that control how the LDAP service ope
 ```clojure
 (defproject my-project "1.0.0-SNAPSHOT"
   ...
-  :plugins [[lein-ldapimem "0.1.0"]]
+  :plugins [[lein-ldapimem "0.1.1"]]
   ...
   :ldapimem {:port 9839 ;optional - default value is 8389
              :basedn "dc=dev,dc=mycorp,dc=com" ; optional - base domain, default is "dc=example,dc=com"
